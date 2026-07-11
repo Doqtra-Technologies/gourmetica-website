@@ -70,7 +70,8 @@ export default async function NewsDetail({ params }: PageProps) {
           </Box>
 
           {/* Article Paragraphs */}
-          <Box className="flex flex-col gap-6 text-neutral-800 leading-relaxed text-justify" style={{ fontSize: "17.5px" }}>
+          {/* Justified text forms whitespace rivers at phone widths — left-align below md */}
+          <Box className="flex flex-col gap-6 text-neutral-800 leading-relaxed text-left md:text-justify" style={{ fontSize: "17.5px" }}>
             {article.content.map((p, idx) => (
               <p 
                 key={idx} 

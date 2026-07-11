@@ -1,5 +1,6 @@
 import { SERVICES } from "@/constants/services";
 import { CASE_STUDIES } from "@/constants/results";
+import { CLIENTS } from "@/constants/clients";
 import { 
   BarChart, 
   BookOpen, 
@@ -41,28 +42,13 @@ export const homeContent = {
   logoCloud: {
     title: "Trusted by 70+ Businesses",
     subtitle: "From independent businesses to growing multi-location brands, we've helped companies build stronger brands, generate more leads and accelerate growth.",
-    logos: [
-      { src: "/images/clients/antepkitchen.co.uk.jpg", alt: "Antep Kitchen" },
-      { src: "/images/clients/beboz-zebra-printer-logo.png", alt: "Beboz" },
-      { src: "/images/clients/carnivoorkitchen.com.png", alt: "Carnivoor Kitchen" },
-      { src: "/images/clients/gbddoner.com.png", alt: "GBD Doner" },
-      { src: "/images/clients/gustoricco.com.png", alt: "Gusto Ricco" },
-      { src: "/images/clients/ivytreeessex.co.uk.png", alt: "Ivy Tree" },
-      { src: "/images/clients/leilabrasserie.co.uk.png", alt: "Leila Brasserie" },
-      { src: "/images/clients/pide-co.com.png", alt: "Pide Co" },
-      { src: "/images/clients/sofra.co.uk.jpg", alt: "Sofra London" },
-      { src: "/images/clients/thedirectpizzaco.co.uk.jpg", alt: "The Direct Pizza Co" },
-      { src: "/images/clients/jennys-brackleyonline.co.uk.png", alt: "Jennys Café" },
-      { src: "/images/clients/masarestaurant.com.tr-en.png", alt: "Masa Restaurant" },
-      { src: "/images/clients/thesolo.co.uk.png", alt: "Solo Kitchen" },
-      { src: "/images/clients/theshiregrill.co.uk.jpg", alt: "The Shire Grill" },
-      { src: "/images/clients/phoenix-solutions-logo1.png", alt: "Phoenix Solutions" },
-      { src: "/images/clients/mysarestaurant.co.uk.png", alt: "Mysa Hoddesdon" },
-      { src: "/images/clients/zone-essex.png", alt: "Zone Essex" },
-      { src: "/images/clients/anatolian--.png", alt: "Anatolian Turkish Kitchen" },
-      { src: "/images/clients/renaflame-logos-(2).png", alt: "Renaflame" },
-      { src: "/images/clients/screen-shot-2026-07-04-at-12.18.17.png", alt: "Cutty Sark" }
-    ]
+    // Derived from the client roster (single source of truth): only clients
+    // with a real logo file appear, and each links out where a URL exists.
+    logos: CLIENTS.filter((c) => c.logo).map((c) => ({
+      src: `/images/clients/${c.logo}`,
+      alt: c.name,
+      href: c.url && c.url !== "#" ? c.url : undefined,
+    })),
   },
   openingRemark: {
     features: [

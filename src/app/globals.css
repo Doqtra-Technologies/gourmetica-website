@@ -9,6 +9,19 @@
   --color-black: #000000;
   --color-white: #FFFFFF;
 
+  /* Brand scale — components across core/ and blocks/ reference brand-*
+     utilities (hover/focus states, badges, buttons). Without these tokens those
+     classes generate no CSS at all. Centered on the primary red. */
+  --color-brand-50: #FDECEC;
+  --color-brand-100: #FAD6D7;
+  --color-brand-200: #F5AAAC;
+  --color-brand-300: #EF7B7E;
+  --color-brand-400: #E94E52;
+  --color-brand-500: #E42528;
+  --color-brand-600: #BD1A1D;
+  --color-brand-700: #951316;
+  --color-brand-900: #4E0A0B;
+
   /* Premium Palette */
   --color-warm-white: #FAFAF9;
   --color-charcoal: #27272A;
@@ -38,11 +51,13 @@
   --font-body: 'Raleway', sans-serif;
   --font-secondary: 'Open Sans', sans-serif;
 
-  /* Font Sizes */
-  --text-display-xl: 4.5rem;
-  --text-display-lg: 4rem;
-  --text-heading-xl: 3rem;
-  --text-heading-lg: 2.25rem;
+  /* Font Sizes — display/heading sizes are fluid: the clamp() max equals the
+     previous fixed value, so desktop rendering is unchanged and only small
+     viewports scale down. */
+  --text-display-xl: clamp(2.5rem, 1.25rem + 4.9vw, 4.5rem);
+  --text-display-lg: clamp(2.25rem, 1.15rem + 4.4vw, 4rem);
+  --text-heading-xl: clamp(1.875rem, 1.2rem + 2.8vw, 3rem);
+  --text-heading-lg: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem);
   --text-heading-md: 1.5rem;
   --text-heading-sm: 1.25rem;
   --text-body-xl: 1.25rem;
@@ -70,11 +85,12 @@
   --spacing-30: 7.5rem;
   --spacing-40: 10rem;
 
-  /* Section Spacing Tokens */
-  --spacing-section-sm: 80px;
-  --spacing-section-md: 120px;
-  --spacing-section-lg: 140px;
-  --spacing-section-xl: 160px;
+  /* Section Spacing Tokens — fluid: max equals the previous fixed value,
+     so only mobile/tablet paddings tighten. */
+  --spacing-section-sm: clamp(56px, 40px + 3vw, 80px);
+  --spacing-section-md: clamp(72px, 48px + 6vw, 120px);
+  --spacing-section-lg: clamp(80px, 52px + 7vw, 140px);
+  --spacing-section-xl: clamp(88px, 56px + 8vw, 160px);
   --spacing-section-inset: 64px;
 
   /* Radius */
@@ -99,6 +115,23 @@
       transform: translateX(-50%);
     }
   }
+}
+
+/* Continuous marquees stop for users who prefer reduced motion; the logos/cards
+   remain visible as a static row. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  .testimonial-marquee-track {
+    animation: none !important;
+  }
+}
+
+/* Shared client-logo treatment (ClientLogoChip). Full natural color at full
+   opacity: the earlier grayscale(1)+opacity(.85) rest state pushed thin, pale
+   marks (Phoenix, Mysa, Zone, Anatolian) below legibility on white chips —
+   they rendered but read as blank boxes. Hover keeps the subtle scale. */
+.client-logo-img {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Global Fonts and Branding CSS (MUST be at the very top) */
@@ -211,10 +244,15 @@ body {
   }
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-  transition: all 0.3s ease;
+/* Must live in @layer base: un-layered rules beat Tailwind's layered utilities,
+   so an un-layered `a { color: inherit }` silently overrides classes like
+   `text-white` on every link (this made the mobile menu links near-invisible). */
+@layer base {
+  a {
+    color: inherit;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
 }
 
 /* Grid & Layout Utilities */
@@ -2693,6 +2731,22 @@ a {
   }
 }
 
+/* Justified body copy produces whitespace "rivers" at narrow line lengths.
+   Keep the justified look on desktop; left-align on phones. */
+@media (max-width: 767px) {
+  .about-right p,
+  .value-card p,
+  .faq-answer-inner p,
+  .article-paragraphs p,
+  .detail-block p,
+  .case-clone-row-content p,
+  .case-clone-results-list,
+  .case-clone-results-list li,
+  .case-clone-results-list li p {
+    text-align: left;
+  }
+}
+
 /* Opening Remark Section */
 .opening-remark {
   margin: 0 auto;
@@ -2702,17 +2756,19 @@ a {
 }
 
 .opening-remark-txt {
-  margin-bottom: 122px;
+  margin-bottom: 56px;
 }
 
+/* Base rules apply below 768px only (the min-width blocks above override them),
+   so size the heading for phones here. */
 .opening-remark-txt--heading {
   color: #000;
   font-family: "Eina 03", sans-serif;
-  font-size: 48px;
+  font-size: 32px;
   font-weight: 700;
   letter-spacing: .802444px;
   line-height: 1.2;
-  margin: 0 0 55px;
+  margin: 0 0 32px;
   max-width: 450px;
 }
 
@@ -2827,8 +2883,8 @@ a {
 /* Marketing Services Accordion (Expertise) Section */
 .our-expertise {
   background-color: #000000 !important;
-  padding-top: 125px;
-  padding-bottom: 125px;
+  padding-top: clamp(72px, 48px + 6vw, 125px);
+  padding-bottom: clamp(72px, 48px + 6vw, 125px);
 }
 
 .our-expertise .section-heading {
@@ -3022,6 +3078,9 @@ a {
   margin-bottom: 25px;
   background-color: #fcfcfc;
   padding: 100px 0;
+  /* The card deliberately bleeds right on tablet (-30px margin); clip it here so
+     the page never gains horizontal scroll width. */
+  overflow-x: clip;
 }
 
 .casestudy-card {
@@ -3322,11 +3381,20 @@ a {
     margin-bottom: 88px;
     display: flex;
     flex-direction: column;
+    min-height: 0;
   }
 
   .casestudy-card--main {
     height: 350px;
     min-height: 350px;
+  }
+
+  /* min-height:100% resolves to 0 inside the column-flex card on mobile, hiding
+     the image entirely — pin the image layer to the 350px card instead. */
+  .casestudy-card--main-img {
+    position: absolute;
+    inset: 0;
+    min-height: 0;
   }
 
   .casestudy-card--main-text {
@@ -3340,6 +3408,13 @@ a {
 
   .casestudy-card-secondary {
     padding: 40px 20px;
+  }
+
+  /* Partner badges render at natural size on desktop; cap them on mobile so a
+     large source image can't dominate the card. */
+  .casestudy-card-secondary--partners img {
+    max-height: 32px;
+    width: auto;
   }
 }
 
@@ -3434,6 +3509,16 @@ footer.footer-custom .custom-footer-menu>ul>li {
     margin-left: 0 !important;
     padding: 0 10px;
     min-width: 0;
+  }
+}
+
+/* Below 640px three 33% columns can't hold the phone/email strings — they
+   overlap the neighbouring column. Stack the column groups instead. */
+@media screen and (max-width: 639px) {
+  footer.footer-custom .custom-footer-menu>ul>li {
+    flex-basis: 100%;
+    margin-bottom: 40px;
+    padding: 0;
   }
 }
 
@@ -3624,6 +3709,9 @@ footer.footer-custom .site-info {
 footer.footer-custom .site-info p {
   margin: 0;
   flex-basis: 100%;
+  /* The base-layer `p { color: #171717 }` rule beats the color inherited from
+     .site-info, leaving the copyright/legal lines near-black on black. */
+  color: inherit;
 }
 
 footer.footer-custom .site-info p a {

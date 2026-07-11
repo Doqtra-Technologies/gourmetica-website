@@ -146,7 +146,7 @@ export function WorkGrid({ cases }: WorkGridProps) {
               href={`/results/${study.slug}`}
               className="inline-flex items-center gap-2 text-primary font-heading font-bold uppercase text-[12px] tracking-widest"
             >
-              Read More <i className="fa fa-arrow-right" aria-hidden="true" />
+              Read More <i className="not-italic" aria-hidden="true">→</i>
             </Link>
           </div>
         ))}

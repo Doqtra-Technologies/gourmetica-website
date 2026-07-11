@@ -230,6 +230,8 @@ export function HomeServicesSection() {
               style={{ overflow: 'hidden' }}
             >
               <div style={{ padding: '35px 0 38px 19px', color: COLOR_WHITE }}>
+                {/* The base-layer `p { color: … }` rule beats inherited color,
+                    so the paragraph must set white explicitly. */}
                 <p
                   style={{
                     fontFamily: FONT_BODY,
@@ -238,6 +240,7 @@ export function HomeServicesSection() {
                     letterSpacing: '0.03em',
                     lineHeight: 1.7,
                     margin: 0,
+                    color: COLOR_WHITE,
                   }}
                 >
                   {service.desc}
@@ -279,13 +282,11 @@ export function HomeServicesSection() {
     <section
       className="our-expertise"
       id="services"
-      style={{
-        backgroundColor: '#000000',
-        paddingTop: '125px',
-      }}
+      style={{ backgroundColor: '#000000' }}
     >
       {/* ── Section Heading ── */}
       <div
+        className="px-6 md:px-[50px]"
         style={{
           color: COLOR_WHITE,
           fontSize: '14px',
@@ -295,7 +296,6 @@ export function HomeServicesSection() {
           lineHeight: 1,
           margin: '0 auto',
           maxWidth: '1140px',
-          padding: '0 50px',
           textTransform: 'uppercase',
           display: 'flex',
           alignItems: 'center',
@@ -326,38 +326,19 @@ export function HomeServicesSection() {
         <span>Marketing Services</span>
       </div>
 
-      {/* ── Content Container ── */}
+      {/* ── Content Container ── single column on mobile, two columns from lg up */}
       <div style={{ margin: '0 auto', maxWidth: '1140px' }}>
-        <div
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            padding: '103px 0 147px',
-          }}
-        >
+        <div className="flex flex-wrap py-[64px] lg:pt-[103px] lg:pb-[147px]">
           {/* Left Column */}
-          <div
-            style={{
-              margin: 0,
-              padding: '0 50px',
-              width: '50%',
-              boxSizing: 'border-box',
-            }}
-          >
+          <div className="w-full lg:w-1/2 box-border px-6 md:px-[50px]">
             {leftServices.map((service, idx) =>
               renderAccordionItem(service, idx, idx === 0),
             )}
           </div>
 
-          {/* Right Column */}
-          <div
-            style={{
-              margin: 0,
-              padding: '0 50px',
-              width: '50%',
-              boxSizing: 'border-box',
-            }}
-          >
+          {/* Right Column — on mobile it continues the single column, so its first
+              item keeps the standard top margin instead of column-top spacing */}
+          <div className="w-full lg:w-1/2 box-border px-6 md:px-[50px] mt-[28px] lg:mt-0">
             {rightServices.map((service, idx) =>
               renderAccordionItem(service, idx + leftServices.length, idx === 0),
             )}

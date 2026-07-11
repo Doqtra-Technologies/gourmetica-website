@@ -13,7 +13,7 @@ const sliderSlides = [
     title: "Advertising",
     tag: "Case Study",
     excerpt: "Our advertising team welds their Growth Marketing background together with the fresh dynamics of digital technologies. From Google Ads to display ads, we have the answers for every kind of question to advertise your restaurant.",
-    image: "/images/banner/NO5Main-min-min.jpg",
+    image: "/images/banner/No5Main-min-min.jpg",
     link: "/results/no5",
     partners: [
       { src: "/HOME PAGE/product/badge-google-partner.png", alt: "Google Partner" },
@@ -79,7 +79,7 @@ export default function Home() {
                 </p>
               </div>
               <Link href="/whygourmetica" className="view-all-link" style={{ marginTop: "24px", display: "inline-flex" }}>
-                Why Gourmetica <i className="fa fa-arrow-right" aria-hidden="true"></i>
+                Why Gourmetica <i className="not-italic" aria-hidden="true">→</i>
               </Link>
             </div>
             <div className="opening-remark-img">
@@ -104,7 +104,7 @@ export default function Home() {
           <div className="section-header-row">
             <h2>Featured Results</h2>
             <Link href="/results" className="view-all-link">
-              View All Client Stories <i className="fa fa-arrow-right" aria-hidden="true"></i>
+              View All Client Stories <i className="not-italic" aria-hidden="true">→</i>
             </Link>
           </div>
 
@@ -474,6 +474,13 @@ export default function Home() {
         }
 
         /* Responsive */
+        @media (max-width: 767px) {
+          .section-header-row {
+            flex-wrap: wrap;
+            gap: 12px;
+          }
+        }
+
         @media (max-width: 991px) {
           .opening-remark-grid {
             grid-template-columns: 1fr;

@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { cn } from '@/core/utils';
 import { FadeIn, FadeUp, trustMotion } from '@/core/motion';
+import { ClientLogoChip } from '@/core/components/ClientLogoChip';
 import { LogoCloudBlockProps } from './LogoCloudBlock.types';
 
 export const LogoCloudBlock = React.forwardRef<HTMLDivElement, LogoCloudBlockProps>(
@@ -19,34 +20,18 @@ export const LogoCloudBlock = React.forwardRef<HTMLDivElement, LogoCloudBlockPro
   ) => {
     const [isPaused, setIsPaused] = React.useState(false);
 
+    /* Same rendering foundation as the /clients grid and the /products trust
+       bar: natural-color artwork in a fixed-size tone-aware chip — no white-out
+       filter, so opaque-background files can never flatten into gray boxes. */
     const renderLogo = (logo: { src: string; alt: string; href?: string }, index: number) => {
-      const img = (
-        <div
-          className="flex items-center justify-center shrink-0 px-8"
-          style={{ height: 56 }}
-        >
-          <img
-            src={logo.src}
-            alt={logo.alt}
-            style={{
-              maxHeight: 32,
-              width: 'auto',
-              opacity: 0.35,
-              filter: 'grayscale(100%)',
-              transition: 'all 300ms ease-out',
-              cursor: 'pointer',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.opacity = '1';
-              e.currentTarget.style.transform = 'scale(1.05)';
-              e.currentTarget.style.filter = 'grayscale(0%)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.opacity = '0.35';
-              e.currentTarget.style.transform = 'scale(1)';
-              e.currentTarget.style.filter = 'grayscale(100%)';
-            }}
-            loading="lazy"
+      const filename = logo.src.split('/').pop() ?? logo.src;
+      const chip = (
+        <div className="group shrink-0" title={logo.alt}>
+          <ClientLogoChip
+            logo={filename}
+            name={logo.alt}
+            className="w-40 h-20 rounded-lg p-3 border border-neutral-200 shadow-sm"
+            imgClassName="group-hover:scale-105"
           />
         </div>
       );
@@ -54,11 +39,11 @@ export const LogoCloudBlock = React.forwardRef<HTMLDivElement, LogoCloudBlockPro
       if (logo.href) {
         return (
           <a key={index} href={logo.href} target="_blank" rel="noopener noreferrer" className="block focus-visible:outline-none">
-            {img}
+            {chip}
           </a>
         );
       }
-      return <React.Fragment key={index}>{img}</React.Fragment>;
+      return <React.Fragment key={index}>{chip}</React.Fragment>;
     };
 
     return (
@@ -82,8 +67,8 @@ export const LogoCloudBlock = React.forwardRef<HTMLDivElement, LogoCloudBlockPro
           className="w-full mx-auto"
           style={{
             maxWidth: 1320,
-            paddingLeft: 96,
-            paddingRight: 96,
+            paddingLeft: 'var(--page-gutter)',
+            paddingRight: 'var(--page-gutter)',
           }}
         >
           {/* Intro line */}
@@ -171,23 +156,30 @@ export const LogoCloudBlock = React.forwardRef<HTMLDivElement, LogoCloudBlockPro
               style={{
                 borderTop: '1px solid rgba(0,0,0,0.08)',
                 borderBottom: '1px solid rgba(0,0,0,0.08)',
-                paddingTop: 36,
-                paddingBottom: 36,
+                paddingTop: 44,
+                paddingBottom: 44,
+                /* Fade the strip edges so logos never appear hard-cropped */
+                maskImage: 'linear-gradient(to right, transparent, black 8%, black 92%, transparent)',
+                WebkitMaskImage: 'linear-gradient(to right, transparent, black 8%, black 92%, transparent)',
               }}
               onMouseEnter={() => setIsPaused(true)}
               onMouseLeave={() => setIsPaused(false)}
             >
+              {/* Exactly two copies: the -50% marquee keyframe then loops seamlessly
+                  (three copies made the loop point jump by half a copy). */}
               <div
                 className={cn(
                   "flex w-max items-center",
                   !isPaused && "animate-marquee"
                 )}
                 style={{
-                  gap: 24,
+                  gap: 56,
+                  paddingRight: 56, // equal to the gap so the -50% loop seam is invisible
+                  animationDuration: '55s',
                   animationPlayState: isPaused ? 'paused' : 'running',
                 }}
               >
-                {[...logos, ...logos, ...logos].map((logo, index) => renderLogo(logo, index))}
+                {[...logos, ...logos].map((logo, index) => renderLogo(logo, index))}
               </div>
             </div>
           </FadeIn>
