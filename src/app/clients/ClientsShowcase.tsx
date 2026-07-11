@@ -104,7 +104,7 @@ export default function ClientsShowcase() {
             className="font-mont font-black uppercase text-white leading-none tracking-tighter text-[48px] sm:text-[72px] md:text-[100px] lg:text-[130px] transition-colors duration-300 group-hover:text-primary"
             style={{ fontFamily: "var(--font-heading)" }}
           >
-            Get In Touch
+            Book A Call
           </h2>
         </Link>
       </Reveal>

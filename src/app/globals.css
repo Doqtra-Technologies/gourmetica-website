@@ -213,8 +213,13 @@
 html,
 body {
   width: 100%;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
+  /* clip (not hidden): same horizontal clipping, but doesn't create a scroll
+     container — overflow-x: hidden on body disables position: sticky
+     descendants (needed for the /products scroll-pinned video). */
+  overflow-x: clip;
+  /* No global scroll-behavior: smooth — it animates every wheel tick, which
+     makes scroll-linked effects (the /products video pin) feel laggy. Anchor
+     jumps that want smoothness use scrollIntoView({ behavior: "smooth" }). */
   background-color: var(--color-white);
   color: var(--color-text-dark);
   font-family: var(--font-body);

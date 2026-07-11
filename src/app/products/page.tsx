@@ -1,7 +1,8 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import { Section, Container, Grid, Box, Stack, Flex } from "@/core/primitives";
 import { Heading, Text } from "@/core/typography";
 import { Button } from "@/core/components";
@@ -21,20 +22,126 @@ const FEATURES = [
   {
     title: "Launch Your Website in Days",
     description: "Get your business online quickly with a professionally designed website—no lengthy development process.",
+    image: "/product/card1.png",
   },
   {
     title: "Update Your Content in Minutes",
     description: "Easily edit menus, images, events, and pages without any technical knowledge.",
+    image: "/product/card2.png",
   },
   {
     title: "Designed to Grow Your Business",
     description: "SEO-ready and built to convert visitors into customers.",
+    image: "/product/card3.png",
   },
 ];
 
 /* Venue words cycled in the two-column headline — same device as the
    benchmark title the client pointed to. */
 const VENUE_WORDS = ["restaurant", "pub", "cafe"];
+
+/**
+ * Product video with a scroll-driven expansion: pinned while in view, it
+ * interpolates from a contained rounded card to a full-bleed viewport fill,
+ * holds full-screen for a beat, then releases. Scroll-linked, so reversing
+ * scroll reverses the effect. Mobile (<768px) and prefers-reduced-motion get
+ * a static contained block instead — a scroll pin eats too much scroll length
+ * on small screens to feel good.
+ */
+function ScrollExpandVideo() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const pinRef = useRef<HTMLDivElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [animated, setAnimated] = useState(false);
+  const reducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    const update = () => setAnimated(mq.matches && !reducedMotion);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, [reducedMotion]);
+
+  const { scrollYProgress } = useScroll({
+    target: pinRef,
+    offset: ["start start", "end end"],
+  });
+  // Spring-smooth the raw progress: wheel scrolling arrives in discrete steps,
+  // which otherwise lands as visible size jumps. This keeps the smoothing
+  // local to the video (no global scroll-behavior).
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 140, damping: 26, mass: 0.4 });
+  // Expansion completes at 55% progress; the rest of the pin holds full-screen.
+  const width = useTransform(smoothProgress, [0, 0.55], ["66vw", "100vw"]);
+  const height = useTransform(smoothProgress, [0, 0.55], ["64vh", "100vh"]);
+  const borderRadius = useTransform(smoothProgress, [0, 0.55], ["16px", "0px"]);
+
+  const handlePlay = () => {
+    videoRef.current?.play();
+    setIsPlaying(true);
+  };
+
+  const videoEl = (
+    <>
+      <Video
+        ref={videoRef}
+        aspectRatio="auto"
+        radius="none"
+        muted
+        loop
+        playsInline
+        poster="/product/card1.png"
+        className="absolute inset-0 w-full h-full object-cover"
+        onPause={() => setIsPlaying(false)}
+        onPlay={() => setIsPlaying(true)}
+      >
+        <source src="/product/video.mp4" type="video/mp4" />
+      </Video>
+      {!isPlaying && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black/20 transition-opacity duration-300 group-hover:bg-black/30">
+          <div className="w-20 h-20 rounded-full bg-white/95 flex items-center justify-center shadow-xl transition-transform duration-300 group-hover:scale-105">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M8 5v14l11-7L8 5z" fill="#0a0a0a" />
+            </svg>
+          </div>
+        </div>
+      )}
+    </>
+  );
+
+  if (!animated) {
+    // Static fallback: the previous contained treatment. pinRef must still be
+    // attached — useScroll throws if its target ref never hydrates.
+    return (
+      <div ref={pinRef}>
+        <Container size="wide" className="py-14">
+          <Box
+            className="relative rounded-lg overflow-hidden cursor-pointer group max-w-5xl mx-auto aspect-video"
+            onClick={!isPlaying ? handlePlay : undefined}
+          >
+            {videoEl}
+          </Box>
+        </Container>
+      </div>
+    );
+  }
+
+  return (
+    // No margin here: it would collapse through the parent wrapper and expose
+    // a band of the page background between the hero and the video.
+    <div ref={pinRef} className="relative h-[240vh]">
+      <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
+        <motion.div
+          style={{ width, height, borderRadius, willChange: "width, height" }}
+          className="relative overflow-hidden cursor-pointer group"
+          onClick={!isPlaying ? handlePlay : undefined}
+        >
+          {videoEl}
+        </motion.div>
+      </div>
+    </div>
+  );
+}
 
 function Blob({ className }: { className: string }) {
   return (
@@ -47,14 +154,6 @@ function Blob({ className }: { className: string }) {
 }
 
 export default function Products() {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  const handlePlay = () => {
-    videoRef.current?.play();
-    setIsPlaying(true);
-  };
-
   const trustClients = TRUST_BRAND_NAMES
     .map((name) => CLIENTS.find((c) => c.name === name))
     .filter((c): c is NonNullable<typeof c> => Boolean(c));
@@ -88,10 +187,11 @@ export default function Products() {
                 </Box>
               </Stack>
 
-              {/* Product UI on real client sites — dual phone mockups */}
-              <div className="relative flex justify-center py-6 lg:py-10">
-                <div className="absolute left-1/4 top-4 w-44 h-44 rounded-full bg-primary/15 blur-3xl pointer-events-none" aria-hidden />
-                <HoverScale amount={1.02} className="relative w-full max-w-[420px] aspect-[4/3.4]">
+              {/* Product UI on real client sites — dual phone mockups, sized as
+                  the hero's centerpiece per client direction */}
+              <div className="relative flex justify-center py-6 lg:py-4">
+                <div className="absolute left-1/4 top-4 w-56 h-56 rounded-full bg-primary/15 blur-3xl pointer-events-none" aria-hidden />
+                <HoverScale amount={1.02} className="relative w-full max-w-[480px] sm:max-w-[560px] lg:max-w-[640px] aspect-[4/3.4]">
                   <img
                     src="/product/mobile2.png"
                     alt="TABLY venue website on mobile"
@@ -149,39 +249,16 @@ export default function Products() {
             </Stack>
           </Reveal>
 
-          {/* Video — kept as previously implemented */}
-          <Reveal delay={0.2}>
-            <Box
-              className="relative rounded-lg overflow-hidden cursor-pointer group mt-14 max-w-5xl mx-auto"
-              onClick={!isPlaying ? handlePlay : undefined}
-            >
-              <Video
-                ref={videoRef}
-                aspectRatio="video"
-                radius="lg"
-                muted
-                loop
-                playsInline
-                poster="/product/card1.png"
-                className="w-full"
-                onPause={() => setIsPlaying(false)}
-                onPlay={() => setIsPlaying(true)}
-              >
-                <source src="/product/video.mp4" type="video/mp4" />
-              </Video>
-              {!isPlaying && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/20 transition-opacity duration-300 group-hover:bg-black/30">
-                  <div className="w-20 h-20 rounded-full bg-white/95 flex items-center justify-center shadow-xl transition-transform duration-300 group-hover:scale-105">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                      <path d="M8 5v14l11-7L8 5z" fill="#0a0a0a" />
-                    </svg>
-                  </div>
-                </div>
-              )}
-            </Box>
-          </Reveal>
         </Container>
       </Section>
+
+      {/* Video — scroll-driven full-bleed expansion. Lives OUTSIDE the hero
+          Section: its overflow-hidden ancestor would disable position:sticky.
+          Spacing via padding (not child margins), which can't collapse and
+          expose the page background between the dark blocks. */}
+      <div className="bg-neutral-950 dark pt-6">
+        <ScrollExpandVideo />
+      </div>
 
       {/* ── Two-column text block ── */}
       <Section spacing="sm">
@@ -209,11 +286,22 @@ export default function Products() {
             <Grid columns={1} gap="lg" className="md:grid-cols-3">
               {FEATURES.map((feature) => (
                 <StaggerItem key={feature.title} className="h-full">
-                  <Stack gap="sm" className="bg-white border border-neutral-200/80 rounded-xl p-8 h-full">
-                    <span className="block w-10 h-[3px] bg-primary rounded-full mb-1" aria-hidden />
-                    <Heading level={3} size="heading-sm">{feature.title}</Heading>
-                    <Text size="body-sm" className="text-neutral-600 leading-relaxed">{feature.description}</Text>
-                  </Stack>
+                  <div className="bg-white border border-neutral-200/80 rounded-xl overflow-hidden h-full flex flex-col">
+                    {/* Fixed aspect + object-cover keeps all three crops identical */}
+                    <div className="aspect-[4/3] w-full overflow-hidden">
+                      <img
+                        src={feature.image}
+                        alt=""
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                    </div>
+                    <Stack gap="sm" className="p-8 flex-1">
+                      <span className="block w-10 h-[3px] bg-primary rounded-full mb-1" aria-hidden />
+                      <Heading level={3} size="heading-sm">{feature.title}</Heading>
+                      <Text size="body-sm" className="text-neutral-600 leading-relaxed">{feature.description}</Text>
+                    </Stack>
+                  </div>
                 </StaggerItem>
               ))}
             </Grid>

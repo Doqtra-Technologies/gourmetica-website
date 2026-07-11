@@ -38,7 +38,9 @@ const defaultNavItems: NavItem[] = [
   { label: 'News', href: '/news' },
   { label: 'FAQs', href: '/faqs' },
 ];
-const defaultCta: NavItem = { label: 'Get In Touch', href: '/getintouch' };
+// Client spec: the global CTA reads "Book A Call" (not "Get In Touch");
+// destination stays the contact page.
+const defaultCta: NavItem = { label: 'Book A Call', href: '/getintouch' };
 
 /* ───────────────────────────────────────────
    Component

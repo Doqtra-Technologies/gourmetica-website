@@ -71,7 +71,7 @@ export default function WhyGourmetica() {
             href="/getintouch"
             className="inline-block bg-primary hover:bg-[#bd1a1d] text-white rounded-none px-[28px] pt-[16px] pb-[14px] font-bold uppercase tracking-[0.05em] text-[12px] transition-colors duration-200"
           >
-            Get In Touch
+            Book A Call
           </Link>
         </PageContainer>
       </section>
