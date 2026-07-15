@@ -13,22 +13,31 @@ const sliderSlides = [
     title: "Advertising",
     tag: "Case Study",
     excerpt: "Our advertising team welds their Growth Marketing background together with the fresh dynamics of digital technologies. From Google Ads to display ads, we have the answers for every kind of question to advertise your restaurant.",
-    image: "/images/banner/NO5Main-min-min.jpg",
-    link: "/results/no5"
+    image: "/images/banner/No5Main-min-min.jpg",
+    link: "/results/no5",
+    partners: [
+      { src: "/HOME PAGE/product/badge-google-partner.png", alt: "Google Partner" },
+      { src: "/HOME PAGE/product/badge-google-hotel-ads.jpg", alt: "Google Hotel Ads" }
+    ]
   },
   {
-    title: "Growth Strategy",
+    title: "Website Design",
     tag: "Case Study",
     excerpt: "Neatly designed website architectures, captivating landing pages, chic and simple designs. Our website designs will hand you the keys to ultimate success, higher conversion rates, increased sales, and impressed visitors by applying your marketing strategies into a web design.",
-    image: "/images/results/LEONIDAS/IMG_8786.jpg",
-    link: "/results/swiss-scent"
+    image: "/images/banner/OttoKichenMain-min-min.jpg",
+    link: "/results/ottokitchen",
+    partners: [
+      { src: "/HOME PAGE/product/logo-hubspot.png", alt: "Hubspot" },
+      { src: "/HOME PAGE/product/logo-wordpress.png", alt: "WordPress" }
+    ]
   },
   {
     title: "Digital Strategy",
     tag: "Case Study",
     excerpt: "Rest assured, your brand's digital success is our top priority. Let our expert team be your guiding light on the journey towards digital excellence. With Gourmetica by your side, you can trust that your digital presence is in the hands of skilled professionals.",
     image: "/images/banner/PiyazMain-min-min.jpg",
-    link: "/results/leonidas"
+    link: "/results/payiz",
+    partners: []
   }
 ];
 
@@ -37,7 +46,7 @@ export default function Home() {
     <main className="home-page-wrapper">
       {/* 1. Hero Block */}
       <HeroBlock
-        title="Growth Marketing That Delivers Results"
+        title="Growth Marketing That Delivers Results."
         media={
           <video>
             <source src="/HOME PAGE/VIDEO BANNER/0704.mp4" type="video/mp4" />
@@ -70,16 +79,16 @@ export default function Home() {
                 </p>
               </div>
               <Link href="/whygourmetica" className="view-all-link" style={{ marginTop: "24px", display: "inline-flex" }}>
-                Why Gourmetica <i className="fa fa-arrow-right" aria-hidden="true"></i>
+                Why Gourmetica <i className="not-italic" aria-hidden="true">→</i>
               </Link>
             </div>
             <div className="opening-remark-img">
               <img
-                src="/HOME PAGE/Photo Banner/ChatGPT Image 4 Tem 2026 11_15_58.png"
+                src="/images/banner/sevices2.jpg"
                 alt="Strategy Banner"
                 loading="lazy"
-                width={1672}
-                height={941}
+                width={441}
+                height={565}
               />
             </div>
           </div>
@@ -95,7 +104,7 @@ export default function Home() {
           <div className="section-header-row">
             <h2>Featured Results</h2>
             <Link href="/results" className="view-all-link">
-              View All Client Stories <i className="fa fa-arrow-right" aria-hidden="true"></i>
+              View All Client Stories <i className="not-italic" aria-hidden="true">→</i>
             </Link>
           </div>
 
@@ -124,6 +133,16 @@ export default function Home() {
                   <div className="casestudy-card-secondary--text">
                     <h4>{study.title}</h4>
                     <p>{study.excerpt}</p>
+                  </div>
+                  <div className="casestudy-card-secondary--partners">
+                    {study.partners.map((partner, pIdx) => (
+                      <img
+                        key={pIdx}
+                        src={partner.src}
+                        alt={partner.alt}
+                        loading="lazy"
+                      />
+                    ))}
                   </div>
                 </div>
               </div>
@@ -455,6 +474,13 @@ export default function Home() {
         }
 
         /* Responsive */
+        @media (max-width: 767px) {
+          .section-header-row {
+            flex-wrap: wrap;
+            gap: 12px;
+          }
+        }
+
         @media (max-width: 991px) {
           .opening-remark-grid {
             grid-template-columns: 1fr;

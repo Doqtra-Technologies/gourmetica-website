@@ -173,10 +173,11 @@ export const HeroBlock = React.forwardRef<HTMLDivElement, HeroBlockProps>(
           }}
         />
 
-        {/* ── ContentLayer ── uses inline paddingLeft to guarantee alignment */}
+        {/* ── ContentLayer ── shares --page-gutter with the Header so text aligns
+            with the logo and scales down on mobile (24px) instead of a fixed 120px */}
         <div
           className="relative z-30 w-full max-w-[1440px] mx-auto"
-          style={{ paddingLeft: GUTTER.desktop, paddingRight: GUTTER.desktop }}
+          style={{ paddingLeft: 'var(--page-gutter)', paddingRight: 'var(--page-gutter)' }}
         >
           <div className="w-full text-left" style={{ maxWidth: 580 }}>
             <FadeUp delay={heroMotion.delay.heading1} duration={heroMotion.duration.fade} yOffset={heroMotion.yOffset.heading1} viewport={{ once: true, margin: "200px" }} style={{ marginBottom: 34 }}>

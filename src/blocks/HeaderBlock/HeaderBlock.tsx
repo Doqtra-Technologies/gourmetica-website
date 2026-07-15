@@ -3,7 +3,8 @@
 import * as React from 'react';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import { Box, Flex } from '@/core/primitives';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Flex } from '@/core/primitives';
 import { Button } from '@/core/components';
 import { cn } from '@/core/utils';
 import { useScrollHeader } from '@/core/hooks/useScrollHeader';
@@ -37,7 +38,9 @@ const defaultNavItems: NavItem[] = [
   { label: 'News', href: '/news' },
   { label: 'FAQs', href: '/faqs' },
 ];
-const defaultCta: NavItem = { label: 'Get In Touch', href: '/getintouch' };
+// Client spec: the global CTA reads "Book A Call" (not "Get In Touch");
+// destination stays the contact page.
+const defaultCta: NavItem = { label: 'Book A Call', href: '/getintouch' };
 
 /* ───────────────────────────────────────────
    Component
@@ -61,6 +64,21 @@ export const HeaderBlock = React.forwardRef<HTMLDivElement, HeaderBlockProps>(
       document.addEventListener('mousedown', handler);
       return () => document.removeEventListener('mousedown', handler);
     }, []);
+
+    // Mobile menu: lock body scroll and close on Escape while open
+    useEffect(() => {
+      if (!isOpen) return;
+      const prevOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      const onKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') setIsOpen(false);
+      };
+      document.addEventListener('keydown', onKeyDown);
+      return () => {
+        document.body.style.overflow = prevOverflow;
+        document.removeEventListener('keydown', onKeyDown);
+      };
+    }, [isOpen]);
 
     const enter = useCallback(() => {
       if (closeTimer.current) clearTimeout(closeTimer.current);
@@ -95,31 +113,27 @@ export const HeaderBlock = React.forwardRef<HTMLDivElement, HeaderBlockProps>(
       />
     );
 
-    // Matches gourmetica.co.uk: Eina 03, 12px/16px, weight 500, 2px tracking, uppercase.
-    const navLinkStyle: React.CSSProperties = {
-      fontFamily: 'var(--font-mont)',
-      fontSize: 12,
-      fontWeight: 500,
-      lineHeight: '16px',
-      letterSpacing: '2px',
-      padding: '15px 22px 13px',
-    };
-    // Colours live in globals.css: the unlayered `a { color: inherit }` there outranks
-    // Tailwind's layered text-* utilities, so they cannot be set with classes here.
-    const navLinkClass = "nav-link whitespace-nowrap transition-colors duration-200 uppercase";
+    const navLinkStyle: React.CSSProperties = { fontSize: 13.5, letterSpacing: '0.04em' };
+    const navLinkClass = "font-heading font-semibold whitespace-nowrap text-white/90 hover:text-white transition-colors duration-200 uppercase";
 
     return (
       <header
         ref={ref}
         className={cn(
-          'site-header fixed top-0 left-0 w-full z-[1000] flex items-center transition-all duration-300 border-b',
+          'fixed top-0 left-0 w-full z-[1000] flex items-center transition-all duration-300 border-b border-white/5',
           isScrolled
-            ? 'is-scrolled h-[64px] md:h-[72px] lg:h-[88px] border-white/5 shadow-[0_8px_40px_rgba(0,0,0,0.28)]'
-            : 'h-[72px] md:h-[80px] lg:h-[104px] border-transparent',
+            ? 'h-[64px] md:h-[72px] lg:h-[88px] shadow-[0_8px_40px_rgba(0,0,0,0.28)]'
+            : 'h-[72px] md:h-[80px] lg:h-[104px]',
           className
         )}
         style={{
-          backgroundColor: isScrolled ? "#e42528" : "transparent",
+          /* Never fully transparent: the nav text is always white, but several
+             routes (news, faqs, results, articles…) open on white sections.
+             A dark glass layer is imperceptible over the dark heroes and
+             guarantees ~6:1 contrast over light pages. */
+          backgroundColor: isScrolled ? "rgba(10, 10, 10, 0.72)" : "rgba(9, 9, 11, 0.62)",
+          backdropFilter: isScrolled ? "blur(18px) saturate(160%)" : "blur(14px) saturate(140%)",
+          WebkitBackdropFilter: isScrolled ? "blur(18px) saturate(160%)" : "blur(14px) saturate(140%)",
         }}
         {...props}
       >
@@ -194,7 +208,7 @@ export const HeaderBlock = React.forwardRef<HTMLDivElement, HeaderBlockProps>(
                               <Link
                                 key={idx}
                                 href={service.href}
-                                className="group relative flex items-center gap-2 rounded-lg transition-colors duration-150"
+                                className="group relative flex items-center gap-2 rounded-lg transition-colors duration-150 text-white/85"
                                 style={{ padding: '7px 10px' }}
                                 onClick={(e) => {
                                   setDropdownOpen(false);
@@ -228,7 +242,7 @@ export const HeaderBlock = React.forwardRef<HTMLDivElement, HeaderBlockProps>(
                 }
 
                 return (
-                  <li key={item.label}>
+                  <li key={item.label} className="nav-item">
                     <Link
                       href={item.href}
                       className={navLinkClass}
@@ -241,8 +255,8 @@ export const HeaderBlock = React.forwardRef<HTMLDivElement, HeaderBlockProps>(
                 );
               })}
               {cta && (
-                <li className="ml-2">
-                  <Button asChild className="cta-link rounded-none px-[24px] py-3 font-bold uppercase tracking-[0.04em] text-[12px] h-auto whitespace-nowrap">
+                <li className="nav-item cta-btn ml-2">
+                  <Button asChild className="bg-primary hover:bg-[#bd1a1d] text-white rounded-none px-[24px] py-3 font-bold uppercase tracking-[0.04em] text-[12px] h-auto whitespace-nowrap">
                     <Link href={cta.href}>{cta.label}</Link>
                   </Button>
                 </li>
@@ -252,9 +266,11 @@ export const HeaderBlock = React.forwardRef<HTMLDivElement, HeaderBlockProps>(
 
           {/* ── Mobile Toggle ── */}
           <button
-            className="xl:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus:outline-none z-50"
+            className="xl:hidden flex flex-col justify-center items-center w-11 h-11 space-y-1.5 focus:outline-none z-50"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
+            aria-expanded={isOpen}
+            aria-controls="mobile-menu"
           >
             <span className={cn('block w-6 h-0.5 bg-white transition-transform duration-300', isOpen && 'rotate-45 translate-y-2')} />
             <span className={cn('block w-6 h-0.5 bg-white transition-opacity duration-300', isOpen && 'opacity-0')} />
@@ -263,10 +279,16 @@ export const HeaderBlock = React.forwardRef<HTMLDivElement, HeaderBlockProps>(
         </div>
 
         {/* ── Mobile Menu ── */}
+        <AnimatePresence>
         {isOpen && (
-          <Box
-            className="fixed inset-0 bg-neutral-950 z-40 xl:hidden flex flex-col h-screen overflow-y-auto"
-            style={{ paddingTop: 96, paddingLeft: 'var(--page-gutter)', paddingRight: 'var(--page-gutter)' }}
+          <motion.div
+            id="mobile-menu"
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.22, ease: 'easeOut' }}
+            className="fixed inset-0 bg-neutral-950 z-40 xl:hidden flex flex-col h-[100dvh] overflow-y-auto"
+            style={{ paddingTop: 96, paddingBottom: 40, paddingLeft: 'var(--page-gutter)', paddingRight: 'var(--page-gutter)' }}
           >
             <Flex direction="col" gap="md" as="nav">
               {navItems.map((item) => {
@@ -276,7 +298,7 @@ export const HeaderBlock = React.forwardRef<HTMLDivElement, HeaderBlockProps>(
                       <div className="flex items-center justify-between w-full">
                         <Link
                           href={item.href}
-                          className="mobile-nav-link font-heading font-bold text-2xl uppercase transition-colors"
+                          className="font-heading font-bold text-2xl uppercase text-white hover:text-brand-500 transition-colors py-1.5"
                           onClick={(e) => {
                             setIsOpen(false);
                             setMobileServicesOpen(false);
@@ -286,9 +308,10 @@ export const HeaderBlock = React.forwardRef<HTMLDivElement, HeaderBlockProps>(
                           {item.label}
                         </Link>
                         <button
-                          className="p-2 text-white hover:text-brand-500 bg-transparent border-none cursor-pointer"
+                          className="w-11 h-11 flex items-center justify-center text-white hover:text-brand-500 bg-transparent border-none cursor-pointer"
                           onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
                           aria-label="Toggle services menu"
+                          aria-expanded={mobileServicesOpen}
                         >
                           <svg
                             className={cn("w-6 h-6 transition-transform duration-200", mobileServicesOpen && "rotate-180")}
@@ -299,12 +322,16 @@ export const HeaderBlock = React.forwardRef<HTMLDivElement, HeaderBlockProps>(
                         </button>
                       </div>
                       {mobileServicesOpen && (
-                        <div className="mt-3 ml-1 flex flex-col border-l border-white/10 pl-4">
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          transition={{ duration: 0.2, ease: 'easeOut' }}
+                          className="mt-3 ml-1 flex flex-col border-l border-white/10 pl-4 overflow-hidden">
                           {SERVICES.map((service, idx) => (
                             <Link
                               key={idx}
                               href={service.href}
-                              className="mobile-nav-sublink font-heading font-medium py-2.5 transition-colors"
+                              className="font-heading font-medium text-white/70 hover:text-white py-3 transition-colors"
                               style={{ fontSize: 15 }}
                               onClick={(e) => {
                                 setIsOpen(false);
@@ -315,7 +342,7 @@ export const HeaderBlock = React.forwardRef<HTMLDivElement, HeaderBlockProps>(
                               {service.title}
                             </Link>
                           ))}
-                        </div>
+                        </motion.div>
                       )}
                     </div>
                   );
@@ -324,7 +351,7 @@ export const HeaderBlock = React.forwardRef<HTMLDivElement, HeaderBlockProps>(
                   <Link
                     key={item.label}
                     href={item.href}
-                    className="mobile-nav-link font-heading font-bold text-2xl uppercase transition-colors"
+                    className="font-heading font-bold text-2xl uppercase text-white hover:text-brand-500 transition-colors py-1.5"
                     onClick={(e) => {
                       setIsOpen(false);
                       handleLinkClick(e, item.href);
@@ -335,13 +362,14 @@ export const HeaderBlock = React.forwardRef<HTMLDivElement, HeaderBlockProps>(
                 );
               })}
               {cta && (
-                <Button asChild className="mobile-cta-link rounded-none px-[22px] pt-[15px] pb-[13px] font-bold uppercase tracking-[0.05em] text-[12px] h-auto w-full mt-4">
+                <Button asChild className="bg-primary hover:bg-[#bd1a1d] text-white rounded-none px-[22px] pt-[15px] pb-[13px] font-bold uppercase tracking-[0.05em] text-[12px] h-auto min-h-[44px] w-full mt-4">
                   <Link href={cta.href} onClick={() => setIsOpen(false)}>{cta.label}</Link>
                 </Button>
               )}
             </Flex>
-          </Box>
+          </motion.div>
         )}
+        </AnimatePresence>
       </header>
     );
   }

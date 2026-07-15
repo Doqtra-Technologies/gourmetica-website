@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { cn } from '@/core/utils';
 import { FadeIn, FadeUp, trustMotion } from '@/core/motion';
+import { ClientLogoChip } from '@/core/components/ClientLogoChip';
 import { LogoCloudBlockProps } from './LogoCloudBlock.types';
 
 export const LogoCloudBlock = React.forwardRef<HTMLDivElement, LogoCloudBlockProps>(
@@ -17,35 +18,20 @@ export const LogoCloudBlock = React.forwardRef<HTMLDivElement, LogoCloudBlockPro
     },
     ref
   ) => {
-    /**
-     * The band is black, so each logo has to be treated by how its artwork is authored:
-     *  - JPG has no transparency; invert alone turns its white backing black (invisible) and its dark mark white.
-     *  - PNG line art on transparency knocks out to a clean white silhouette.
-     *  - Badge artwork with a filled background would collapse into a solid disc, so it stays as authored.
-     */
-    const logoFilter = (logo: { src: string; keepOriginalColour?: boolean }, opacity: number) => {
-      if (logo.keepOriginalColour) return `opacity(${opacity})`;
-      const isJpg = /\.jpe?g$/i.test(logo.src);
-      return isJpg
-        ? `invert(1) contrast(140%) brightness(0.8) opacity(${opacity})`
-        : `brightness(0) invert(1) opacity(${opacity})`;
-    };
+    const [isPaused, setIsPaused] = React.useState(false);
 
-    const renderLogo = (logo: { src: string; alt: string; href?: string; keepOriginalColour?: boolean }, index: number) => {
-      const img = (
-        <div
-          className="flex items-center justify-center shrink-0 px-8"
-          style={{ height: 56 }}
-        >
-          <img
-            src={logo.src}
-            alt={logo.alt}
-            style={{
-              maxHeight: 32,
-              width: 'auto',
-              filter: logoFilter(logo, 0.55),
-            }}
-            loading="lazy"
+    /* Same rendering foundation as the /clients grid and the /products trust
+       bar: natural-color artwork in a fixed-size tone-aware chip — no white-out
+       filter, so opaque-background files can never flatten into gray boxes. */
+    const renderLogo = (logo: { src: string; alt: string; href?: string }, index: number) => {
+      const filename = logo.src.split('/').pop() ?? logo.src;
+      const chip = (
+        <div className="group shrink-0" title={logo.alt}>
+          <ClientLogoChip
+            logo={filename}
+            name={logo.alt}
+            className="w-40 h-20 rounded-lg p-3 border border-neutral-200 shadow-sm"
+            imgClassName="group-hover:scale-105"
           />
         </div>
       );
@@ -53,26 +39,26 @@ export const LogoCloudBlock = React.forwardRef<HTMLDivElement, LogoCloudBlockPro
       if (logo.href) {
         return (
           <a key={index} href={logo.href} target="_blank" rel="noopener noreferrer" className="block focus-visible:outline-none">
-            {img}
+            {chip}
           </a>
         );
       }
-      return <React.Fragment key={index}>{img}</React.Fragment>;
+      return <React.Fragment key={index}>{chip}</React.Fragment>;
     };
 
     return (
       <section
         ref={ref}
         className={cn('w-full overflow-hidden', className)}
-        style={{ backgroundColor: '#000000' }}
+        style={{ backgroundColor: '#FAFAF9' }}
         aria-label="Trusted partners"
         {...props}
       >
-        {/* ── Transition from the hero (#09090b) into the black band ── */}
+        {/* ── Gradient Transition from Hero ── */}
         <div
           style={{
             height: 80,
-            background: 'linear-gradient(to bottom, #09090b 0%, #000000 100%)',
+            background: 'linear-gradient(to bottom, rgba(9,9,11,0.10) 0%, rgba(250,250,249,0.45) 30%, rgba(250,250,249,0.80) 65%, #FAFAF9 100%)',
           }}
         />
 
@@ -81,8 +67,8 @@ export const LogoCloudBlock = React.forwardRef<HTMLDivElement, LogoCloudBlockPro
           className="w-full mx-auto"
           style={{
             maxWidth: 1320,
-            paddingLeft: 96,
-            paddingRight: 96,
+            paddingLeft: 'var(--page-gutter)',
+            paddingRight: 'var(--page-gutter)',
           }}
         >
           {/* Intro line */}
@@ -100,7 +86,7 @@ export const LogoCloudBlock = React.forwardRef<HTMLDivElement, LogoCloudBlockPro
                   fontSize: 16,
                   fontWeight: 400,
                   lineHeight: 1.6,
-                  color: 'rgba(255,255,255,0.62)',
+                  color: '#6B6B6B',
                   maxWidth: 620,
                   margin: 0,
                 }}
@@ -127,7 +113,7 @@ export const LogoCloudBlock = React.forwardRef<HTMLDivElement, LogoCloudBlockPro
                 style={{
                   fontSize: 'clamp(28px, 4vw, 40px)',
                   lineHeight: 1.15,
-                  color: 'var(--color-white)',
+                  color: 'var(--color-black)',
                   margin: 0,
                 }}
               >
@@ -168,17 +154,32 @@ export const LogoCloudBlock = React.forwardRef<HTMLDivElement, LogoCloudBlockPro
             <div
               className="overflow-hidden"
               style={{
-                borderTop: '1px solid rgba(255,255,255,0.10)',
-                borderBottom: '1px solid rgba(255,255,255,0.10)',
-                paddingTop: 36,
-                paddingBottom: 36,
+                borderTop: '1px solid rgba(0,0,0,0.08)',
+                borderBottom: '1px solid rgba(0,0,0,0.08)',
+                paddingTop: 44,
+                paddingBottom: 44,
+                /* Fade the strip edges so logos never appear hard-cropped */
+                maskImage: 'linear-gradient(to right, transparent, black 8%, black 92%, transparent)',
+                WebkitMaskImage: 'linear-gradient(to right, transparent, black 8%, black 92%, transparent)',
               }}
+              onMouseEnter={() => setIsPaused(true)}
+              onMouseLeave={() => setIsPaused(false)}
             >
+              {/* Exactly two copies: the -50% marquee keyframe then loops seamlessly
+                  (three copies made the loop point jump by half a copy). */}
               <div
-                className="flex w-max items-center animate-marquee"
-                style={{ gap: 24 }}
+                className={cn(
+                  "flex w-max items-center",
+                  !isPaused && "animate-marquee"
+                )}
+                style={{
+                  gap: 56,
+                  paddingRight: 56, // equal to the gap so the -50% loop seam is invisible
+                  animationDuration: '55s',
+                  animationPlayState: isPaused ? 'paused' : 'running',
+                }}
               >
-                {[...logos, ...logos, ...logos].map((logo, index) => renderLogo(logo, index))}
+                {[...logos, ...logos].map((logo, index) => renderLogo(logo, index))}
               </div>
             </div>
           </FadeIn>
