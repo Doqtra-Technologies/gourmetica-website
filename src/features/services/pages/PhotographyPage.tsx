@@ -33,7 +33,7 @@ export function PhotographyPage() {
   return (
     <ServiceLayout>
       <ServiceImageHero
-        src="/images/services-ref/photography/Photography.jpg"
+        src="/SERVICES BANNER/Photography.png"
         alt="Photographer capturing food and drink"
         title="Photography"
         align="center"

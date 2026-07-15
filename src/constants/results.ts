@@ -30,7 +30,7 @@ export const CASE_STUDIES: CaseStudy[] = [
   {
     title: "PHOENIX FINANCE",
     excerpt: "Phoenix Commercial Finance required website redesign and conversion strategy to drive commercial SME finance queries.",
-    image: "/images/results/PHOENIX/30 JULY.png",
+    image: "/images/results/PHOENIX/5.png",
     link: "/results/phoenix"
   }
 ];
@@ -96,7 +96,7 @@ export const ALL_CASE_STUDIES: ExtendedCaseStudy[] = [
     slug: "swiss-scent",
     title: "SWISS SCENT",
     category: "Hospitality",
-    image: "/images/banner/swissbackground.jpg",
+    image: "/images/results/swiss-scent-ref/_GN_3635.jpg",
     excerpt: "Re-platforming and marketing Swiss Scent premium fragrance B2B solutions, building a centralized inventory, orders, and CMS framework."
   },
   {
@@ -110,14 +110,14 @@ export const ALL_CASE_STUDIES: ExtendedCaseStudy[] = [
     slug: "biitest",
     title: "BiiTest Diagnostics",
     category: "Healthcare",
-    image: "/images/results/BIITEST/3 (1).png",
+    image: "/images/results/BIITEST/IMG_8829.JPG",
     excerpt: "Healthcare digital growth strategy for innovative diagnostic testing products, scaling traffic, and setting e-commerce marketing systems."
   },
   {
     slug: "phoenix",
     title: "PHOENIX FINANCE",
     category: "Finance",
-    image: "/images/results/PHOENIX/30 JULY.png",
+    image: "/images/results/PHOENIX/5.png",
     excerpt: "Phoenix Commercial Finance brokerage required a modern corporate website redesign and lead generation campaigns to acquire commercial lending queries."
   },
   {
@@ -213,7 +213,7 @@ export const CASE_STUDY_DETAILS: Record<string, CaseStudyDetail> = {
     ]
   },
   leonidas: {
-    title: "LEONIDAS CHOCOLATES",
+    title: "LEONIDAS",
     banner: "/images/results/LEONIDAS/kendi-kutunu-olustur-leonidas-cikolata-2.jpg",
     scope: ["E-Commerce Growth Strategy", "Google Ads & PMax Setup", "Meta Advertising Campaigns", "Social Media Management", "Conversion Optimization"],
     websiteUrl: "https://leonidasbrighton.co.uk/",
@@ -227,7 +227,7 @@ export const CASE_STUDY_DETAILS: Record<string, CaseStudyDetail> = {
     ],
     gallery: [
       "/images/results/LEONIDAS/IMG_8786.jpg",
-      "/images/results/LEONIDAS/kendi-kutunu-olustur-leonidas-cikolata-12.jpg"
+      "/images/results/LEONIDAS/IMG_8826.JPG"
     ],
     servicesDelivered: [
       { title: "E-commerce Growth Strategy", description: "Developed a tailored digital marketing strategy designed to increase online revenue, customer acquisition and long-term business growth." },
@@ -240,7 +240,7 @@ export const CASE_STUDY_DETAILS: Record<string, CaseStudyDetail> = {
   },
   biitest: {
     title: "BiiTest DIAGNOSTICS",
-    banner: "/images/results/BIITEST/3 (1).png",
+    banner: "/images/results/BIITEST/IMG_8829.JPG",
     scope: ["Healthcare Growth Strategy", "E-Commerce Strategy", "Social Media Content", "Google Ads Management", "Meta Advertising", "Reporting"],
     websiteUrl: "https://biitest.com/",
     overview: "BiiTest is a UK-based healthcare brand specialising in the development of innovative diagnostic testing solutions. With a focus on quality, reliability and accessibility, the company develops advanced testing products designed to support modern healthcare needs.\n\nAs the business continued to expand its digital presence, BiiTest partnered with Gourmetica to strengthen its online growth strategy. Our objective was to build a scalable digital marketing approach that increased brand visibility, supported e-commerce growth and created a stronger foundation for long-term customer acquisition.",
@@ -252,8 +252,8 @@ export const CASE_STUDY_DETAILS: Record<string, CaseStudyDetail> = {
       { label: "Search Visibility", val: "+310%" }
     ],
     gallery: [
-      "/images/results/BIITEST/1.jpg",
-      "/images/results/BIITEST/6.jpg"
+      "/images/results/BIITEST/IMG_8827.JPG",
+      "/images/results/BIITEST/IMG_8828.JPG"
     ],
     servicesDelivered: [
       { title: "Healthcare Digital Growth Strategy", description: "Developed a tailored digital marketing strategy aligned with BiiTest's business objectives and long-term growth plans." },
@@ -266,7 +266,7 @@ export const CASE_STUDY_DETAILS: Record<string, CaseStudyDetail> = {
   },
   phoenix: {
     title: "PHOENIX COMMERCIAL FINANCE",
-    banner: "/images/results/PHOENIX/30 JULY.png",
+    banner: "/images/results/PHOENIX/5.png",
     scope: ["Corporate Redesign & Dev", "Digital Lead Gen Strategy", "Google Search Ads Management", "Meta Advertising Setup", "Social Media Strategy", "Reporting"],
     websiteUrl: "https://phoenixcf.co.uk/",
     overview: "Phoenix Commercial Finance is a UK-based commercial finance brokerage providing tailored funding solutions to businesses across a wide range of industries. With a relationship-driven approach and access to a broad network of lenders, the company helps SMEs secure the funding they need to grow and achieve their long-term ambitions.\n\nAs part of Phoenix's digital growth journey, Gourmetica partnered with the business to strengthen its online presence through a complete website redesign and an integrated digital marketing strategy. Our objective was to build a modern, conversion-focused digital platform while increasing brand visibility, generating qualified enquiries and supporting long-term business growth.",
@@ -278,8 +278,8 @@ export const CASE_STUDY_DETAILS: Record<string, CaseStudyDetail> = {
       { label: "SME Reach", val: "15k+ business owners" }
     ],
     gallery: [
-      "/images/results/PHOENIX/20 AUG.png",
-      "/images/results/PHOENIX/6 AUG.png"
+      "/images/results/PHOENIX/6.png",
+      "/images/results/PHOENIX/7.png"
     ],
     servicesDelivered: [
       { title: "Digital Growth Strategy", description: "Developed a tailored digital marketing strategy aligned with Phoenix's commercial objectives, target audience and long-term growth plans." },
@@ -291,7 +291,7 @@ export const CASE_STUDY_DETAILS: Record<string, CaseStudyDetail> = {
   },
   "great-british-doner": {
     title: "GREAT BRITISH DONER",
-    banner: "/images/results/GBD/ChatGPT Image 22 May 2026 15_22_25 (2).png",
+    banner: "/images/results/GBD/8.jpg",
     scope: ["Responsive Website Design", "Multi-Location Navigation Map", "Social Media Management", "Google Ads Setup", "Meta Ads Management", "Content Creation"],
     websiteUrl: "https://www.greatbritishdoner.com/",
     overview: "Great British Doner is a fast-growing multi-location restaurant brand redefining modern street food across the UK. As the business continued to expand, the brand required a scalable digital presence capable of supporting customer acquisition, franchise growth and consistent brand communication across multiple locations.\n\nGourmetica partnered with Great British Doner to design and develop a modern, high-performance website while delivering an integrated digital marketing strategy. Through ongoing social media management, Google Ads and Meta advertising, we continue to strengthen the brand's online visibility, drive customer acquisition and support its long-term expansion strategy.",

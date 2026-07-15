@@ -1,6 +1,6 @@
 import { PageContainer } from '@/core/primitives';
 import { ServiceLayout } from '../layouts/ServiceLayout';
-import { ServiceTextHero } from '../components/ServiceTextHero';
+import { ServiceImageHero } from '../components/ServiceImageHero';
 import { SplitBackgroundBlock } from '@/blocks';
 import { ServiceBodyImage } from '../components/ServiceBodyImage';
 import { ServiceSectionHeading } from '../components/ServiceSectionHeading';
@@ -39,10 +39,11 @@ const FEATURES = [
 export function SeoPage() {
   return (
     <ServiceLayout>
-      <ServiceTextHero
+      <ServiceImageHero
+        src="/SERVICES BANNER/SEO.png"
+        alt="Analysing search performance data on a laptop"
         title="Search Engine Optimisation (SEO)"
         subtitle="Great businesses deserve to be found."
-        size="lg"
       />
       <SplitBackgroundBlock>
         <PageContainer size="standard" className="pb-[60px] md:pb-[80px]">

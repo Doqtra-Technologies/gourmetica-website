@@ -11,8 +11,14 @@ interface WorkGridProps {
   cases: ExtendedCaseStudy[];
 }
 
+/**
+ * Shown when no industry filter is active — a curated shortlist rather than the
+ * full roster. Picking an industry still reveals every case study in it.
+ */
+const DEFAULT_SLUGS = ["swiss-scent", "great-british-doner", "leonidas"];
+
 const FILTERS: { label: string; value: string | null }[] = [
-  { label: "All", value: null },
+  { label: "All Industries", value: null },
   { label: "Hospitality", value: "Hospitality" },
   { label: "Healthcare", value: "Healthcare" },
   { label: "Ecommerce", value: "E-Commerce" },
@@ -36,12 +42,15 @@ export function WorkGrid({ cases }: WorkGridProps) {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  const activeLabel = FILTERS.find((f) => f.value === activeFilter)?.label ?? "All";
+  const activeLabel = FILTERS.find((f) => f.value === activeFilter)?.label ?? "All Industries";
 
-  const filteredCases = useMemo(
-    () => (activeFilter ? cases.filter((c) => c.category === activeFilter) : cases),
-    [cases, activeFilter]
-  );
+  const filteredCases = useMemo(() => {
+    if (activeFilter) return cases.filter((c) => c.category === activeFilter);
+    // Keep the curated order rather than the order they appear in the data.
+    return DEFAULT_SLUGS.map((slug) => cases.find((c) => c.slug === slug)).filter(
+      (c): c is ExtendedCaseStudy => Boolean(c)
+    );
+  }, [cases, activeFilter]);
 
   const handleSelectFilter = (value: string | null) => {
     setIsOpen(false);
@@ -65,12 +74,19 @@ export function WorkGrid({ cases }: WorkGridProps) {
     <>
       {/* Filter dropdown */}
       <PageContainer size="standard" className="relative z-30 pb-[40px] md:pb-[50px]">
+        <p
+          id="industry-filter-label"
+          className="font-heading font-semibold uppercase text-[11px] tracking-[0.16em] text-neutral-500 mb-3"
+        >
+          Search by Industry
+        </p>
         <div className="relative inline-block" ref={dropdownRef}>
           <button
             type="button"
             onClick={() => setIsOpen((v) => !v)}
             aria-expanded={isOpen}
             aria-haspopup="listbox"
+            aria-labelledby="industry-filter-label"
             className="flex items-center gap-3 font-heading font-bold uppercase text-[12px] tracking-widest px-5 py-3 border border-neutral-300 bg-white text-black hover:border-black transition-colors duration-200 min-w-[220px] justify-between"
           >
             {activeLabel}

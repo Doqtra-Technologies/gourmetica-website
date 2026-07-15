@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { PageContainer } from '@/core/primitives';
 import { ServiceLayout } from '../layouts/ServiceLayout';
-import { ServiceTextHero } from '../components/ServiceTextHero';
+import { ServiceImageHero } from '../components/ServiceImageHero';
 import { SplitBackgroundBlock } from '@/blocks';
 import { ServiceBodyText } from '../components/ServiceBodyText';
 import { ServiceBodyImage } from '../components/ServiceBodyImage';
@@ -37,10 +37,11 @@ const FEATURES = [
 export function AdvertisingPage() {
   return (
     <ServiceLayout>
-      <ServiceTextHero
+      <ServiceImageHero
+        src="/SERVICES BANNER/Advertising.png"
+        alt="Advertising performance dashboard on a laptop"
         title="Advertising"
         subtitle="Performance-driven advertising that delivers measurable growth."
-        size="xl"
       />
       <SplitBackgroundBlock>
         <PageContainer size="standard" className="pb-[50px] md:pb-[60px]">

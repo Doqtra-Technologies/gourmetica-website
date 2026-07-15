@@ -88,5 +88,11 @@ export default async function WorkDetail({ params }: PageProps) {
     notFound();
   }
 
-  return <LegacyStyleCaseStudy study={study} accentClass={LEGACY_STYLE_ACCENTS[slug] ?? "leonidas-clone"} />;
+  return (
+    <LegacyStyleCaseStudy
+      study={study}
+      accentClass={LEGACY_STYLE_ACCENTS[slug] ?? "leonidas-clone"}
+      centeredGallery={slug === "great-british-doner"}
+    />
+  );
 }

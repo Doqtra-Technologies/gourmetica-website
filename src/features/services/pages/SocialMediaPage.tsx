@@ -43,7 +43,7 @@ export function SocialMediaPage() {
   return (
     <ServiceLayout>
       <ServiceImageHero
-        src="/images/services-ref/social-media/SocialMediaMannagement.jpg"
+        src="/SERVICES BANNER/SOCIAL MEDIA MANAGEMENT.png"
         alt="Social media management desk scene"
         title="Social Media Management (SMM)"
         align="left"

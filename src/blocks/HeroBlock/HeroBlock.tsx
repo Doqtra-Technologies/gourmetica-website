@@ -80,7 +80,7 @@ export const HeroBlock = React.forwardRef<HTMLDivElement, HeroBlockProps>(
       lineHeight: typography.hero.primary.lineHeight,
       letterSpacing: typography.hero.primary.letterSpacing,
       fontFamily: "var(--font-mont)",
-      color: "#ffffff",
+      color: "#E42528",
       textShadow: "0 2px 18px rgba(0,0,0,.28)",
       display: "block",
     };
@@ -104,7 +104,7 @@ export const HeroBlock = React.forwardRef<HTMLDivElement, HeroBlockProps>(
       lineHeight: typography.hero.accent.lineHeight,
       letterSpacing: typography.hero.accent.letterSpacing,
       fontFamily: "var(--font-mont)",
-      color: "#ffffff",
+      color: "#E42528",
       textShadow: "0 2px 18px rgba(0,0,0,.28)",
       display: "block",
     };
@@ -187,7 +187,7 @@ export const HeroBlock = React.forwardRef<HTMLDivElement, HeroBlockProps>(
               <span style={secondaryStyle}>That Delivers</span>
             </FadeUp>
             <FadeUp delay={heroMotion.delay.heading3} duration={heroMotion.duration.fade} yOffset={heroMotion.yOffset.heading3} viewport={{ once: true, margin: "200px" }}>
-              <span style={accentStyle}>Results.</span>
+              <span style={accentStyle}>Results</span>
             </FadeUp>
           </div>
         </div>

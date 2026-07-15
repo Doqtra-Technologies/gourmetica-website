@@ -5,15 +5,25 @@ interface ServiceImageHeroProps {
   src: string;
   alt: string;
   title: string;
+  subtitle?: string;
   align?: 'left' | 'center';
 }
 
-export function ServiceImageHero({ src, alt, title, align = 'left' }: ServiceImageHeroProps) {
+export function ServiceImageHero({ src, alt, title, subtitle, align = 'left' }: ServiceImageHeroProps) {
   return (
     <section className="relative w-full h-[420px] md:h-[560px] lg:h-[660px] overflow-hidden bg-black">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={src} alt={alt} className="absolute inset-0 w-full h-full object-cover" />
-      <div className="absolute inset-0 bg-black/35" />
+      {/* Scrim: the banners are bright, so a flat wash leaves white text unreadable.
+          Left-aligned heroes get a directional gradient that darkens only behind the copy. */}
+      <div
+        className={cn(
+          'absolute inset-0',
+          align === 'left'
+            ? 'bg-gradient-to-r from-black/80 via-black/50 to-black/10'
+            : 'bg-black/45'
+        )}
+      />
       <div className="absolute inset-0 flex items-center">
         <PageContainer size="standard" className="w-full">
           <h1
@@ -25,6 +35,16 @@ export function ServiceImageHero({ src, alt, title, align = 'left' }: ServiceIma
           >
             {title}
           </h1>
+          {subtitle && (
+            <p
+              className={cn(
+                'mt-5 text-[16px] md:text-[18px] leading-[1.7] text-white/80',
+                align === 'left' ? 'max-w-[620px]' : 'mx-auto max-w-[700px] text-center'
+              )}
+            >
+              {subtitle}
+            </p>
+          )}
         </PageContainer>
       </div>
     </section>

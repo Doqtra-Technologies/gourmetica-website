@@ -10,10 +10,16 @@ function chunkPairs<T>(items: T[]): T[][] {
 
 export default function LegacyStyleCaseStudy({
   study,
-  accentClass
+  accentClass,
+  centeredGallery = false
 }: {
   study: CaseStudyDetail;
   accentClass: string;
+  /**
+   * Render gallery pairs the way 42 Holborn does — each image at half the width of
+   * its column and centred, rather than filling the column edge to edge.
+   */
+  centeredGallery?: boolean;
 }) {
   const allServicesLackDescriptions =
     !!study.servicesDelivered?.length && study.servicesDelivered.every((s) => !s.description);
@@ -103,12 +109,19 @@ export default function LegacyStyleCaseStudy({
 
       {chunkPairs(study.gallery).map((pair, idx) =>
         pair.length === 2 ? (
-          <div className="case-clone-image-pair" key={idx}>
+          <div
+            className={
+              centeredGallery
+                ? "case-clone-image-pair case-clone-image-pair--centered"
+                : "case-clone-image-pair"
+            }
+            key={idx}
+          >
             <div>
-              <img src={pair[0]} alt="" />
+              <img src={pair[0]} alt="" style={centeredGallery ? { width: "50%" } : undefined} />
             </div>
             <div>
-              <img src={pair[1]} alt="" />
+              <img src={pair[1]} alt="" style={centeredGallery ? { width: "50%" } : undefined} />
             </div>
           </div>
         ) : (

@@ -3,7 +3,7 @@ export default function SwissScentCaseStudy() {
     <main className="swissscent-clone">
       <section
         className="case-clone-hero"
-        style={{ backgroundImage: "url('/images/banner/swissbackground.jpg')" }}
+        style={{ backgroundImage: "url('/images/results/swiss-scent-ref/_GN_3666.jpg')" }}
       >
         <h2>SWISS SCENT</h2>
       </section>
@@ -14,9 +14,10 @@ export default function SwissScentCaseStudy() {
         </div>
         <div className="case-clone-row-content">
           <p>
-            Swiss Scent, a luxury scent company, specializes in high-quality fragrances and scent branding
-            solutions. Despite their premium products, Swiss Scent struggled with effectively marketing their
-            offerings and generating consistent leads.
+            Swiss Scent is a premium e-commerce fragrance brand offering luxury home scents, perfumes, and scent
+            branding products. Although the brand had a strong product range and premium positioning, it needed a
+            comprehensive digital marketing strategy to increase online sales, improve customer acquisition, and
+            maximise return on advertising spend.
           </p>
         </div>
       </section>
@@ -26,10 +27,10 @@ export default function SwissScentCaseStudy() {
           <h3>Challenges:</h3>
         </div>
         <div className="case-clone-row-content">
-          <p>1. Increasing brand visibility in a competitive market.</p>
-          <p>2. Consistently generating quality leads.</p>
-          <p>3. Enhancing online presence and customer engagement.</p>
-          <p>4. Converting website visitors into customers.</p>
+          <p>1. Increasing online sales in a highly competitive e-commerce market.</p>
+          <p>2. Driving qualified traffic to the online store.</p>
+          <p>3. Reducing cart abandonment and improving conversion rates.</p>
+          <p>4. Building customer loyalty and increasing repeat purchases.</p>
         </div>
       </section>
 
@@ -55,49 +56,52 @@ export default function SwissScentCaseStudy() {
 
       <section className="case-clone-row">
         <div className="case-clone-row-label">
-          <h3>Advertising:</h3>
+          <h3>Paid Advertising:</h3>
         </div>
         <div className="case-clone-row-content">
           <p>
-            We executed targeted Google Ads and retargeting campaigns. This approach led to a 60% increase in
-            website traffic and a 35% rise in lead generation within three months.
+            We launched and optimised Google Shopping, Performance Max, Meta Ads, and dynamic remarketing campaigns
+            focused on high-intent customers. Continuous optimisation of audiences, creatives, and bidding strategies
+            significantly improved sales performance while reducing acquisition costs.
           </p>
         </div>
       </section>
 
       <section className="case-clone-row">
         <div className="case-clone-row-label">
-          <h3>Social Media Management:</h3>
+          <h3>E-commerce Website Optimisation:</h3>
         </div>
         <div className="case-clone-row-content">
           <p>
-            Our team managed Swiss Scent&apos;s social media platforms, creating engaging and visually appealing
-            content. This effort resulted in a 45% increase in followers and a 40% boost in engagement rates,
-            significantly enhancing brand visibility.
+            We enhanced the online shopping experience by improving product page layouts, navigation, mobile
+            responsiveness, page speed, and checkout flow. We also implemented conversion-focused landing pages to
+            maximise purchase rates.
           </p>
         </div>
       </section>
 
       <section className="case-clone-row">
         <div className="case-clone-row-label">
-          <h3>Website Design:</h3>
+          <h3>Social Media Marketing:</h3>
         </div>
         <div className="case-clone-row-content">
           <p>
-            We redesigned Swiss Scent&apos;s website to be more user-friendly and visually attractive. The new
-            design improved the average session duration by 70% and increased conversion rates by 30%.
+            Our team developed premium lifestyle content across Instagram and Facebook, combining organic content with
+            paid campaigns to strengthen brand awareness, showcase products, and drive qualified traffic to the online
+            store.
           </p>
         </div>
       </section>
 
       <section className="case-clone-row" style={{ marginBottom: "50px" }}>
         <div className="case-clone-row-label">
-          <h3>Email Marketing:</h3>
+          <h3>Email Marketing &amp; Automation:</h3>
         </div>
         <div className="case-clone-row-content">
           <p>
-            We developed personalized email marketing campaigns, improving open rates by 55% and click-through
-            rates by 40%. This strategy helped enhance customer retention and drove repeat business.
+            We implemented automated email flows including welcome sequences, abandoned cart recovery, browse
+            abandonment, post-purchase follow-ups, and customer retention campaigns to increase repeat purchases and
+            customer lifetime value.
           </p>
         </div>
       </section>
@@ -108,12 +112,12 @@ export default function SwissScentCaseStudy() {
 
       <section className="case-clone-row" style={{ marginTop: "50px" }}>
         <div className="case-clone-row-label">
-          <h3>Google Advertising:</h3>
+          <h3>SEO &amp; Conversion Optimisation:</h3>
         </div>
         <div className="case-clone-row-content">
           <p>
-            Our targeted Google Ads campaigns focused on high-intent keywords, resulting in an 80% increase in paid
-            search traffic and a 50% rise in lead conversions, providing a substantial return on investment.
+            We optimised product pages with SEO-friendly content, improved technical SEO, and continuously monitored
+            customer behaviour using analytics to identify opportunities for higher conversion rates.
           </p>
         </div>
       </section>
@@ -124,11 +128,12 @@ export default function SwissScentCaseStudy() {
         </div>
         <div className="case-clone-row-content">
           <ul className="case-clone-results-list">
-            <li>60% increase in website traffic through targeted advertising.</li>
-            <li>45% increase in social media followers, boosting brand visibility.</li>
-            <li>70% longer website session durations due to improved design.</li>
-            <li>55% higher email open rates, enhancing customer engagement.</li>
-            <li>80% increase in paid search traffic, leading to more qualified leads.</li>
+            <li>65% increase in online store revenue through targeted digital campaigns.</li>
+            <li>70% increase in qualified website traffic.</li>
+            <li>38% improvement in e-commerce conversion rate.</li>
+            <li>42% increase in returning customers through email automation.</li>
+            <li>35% reduction in cart abandonment rate.</li>
+            <li>5.2x average Return on Ad Spend (ROAS) across paid advertising campaigns.</li>
           </ul>
         </div>
       </section>
@@ -139,11 +144,11 @@ export default function SwissScentCaseStudy() {
         </div>
         <div className="case-clone-row-content">
           <ul className="case-clone-results-list">
-            <li><strong>Website Traffic:</strong> Increased by 60%, attracting more potential customers.</li>
-            <li><strong>Lead Generation:</strong> Improved by 35%, providing Swiss Scent with more business opportunities.</li>
-            <li><strong>Engagement Rates:</strong> Rose by 40%, fostering stronger customer relationships.</li>
-            <li><strong>Conversion Rates:</strong> Increased by 30%, turning more visitors into customers.</li>
-            <li><strong>Paid Search Traffic:</strong> Boosted by 80%, enhancing visibility and attracting high-intent users.</li>
+            <li><strong>Online Revenue:</strong> Increased by 65%, generating substantial growth in e-commerce sales.</li>
+            <li><strong>Qualified Traffic:</strong> Increased by 70%, attracting customers with strong purchase intent.</li>
+            <li><strong>Conversion Rate:</strong> Improved by 38%, converting more visitors into paying customers.</li>
+            <li><strong>Customer Retention:</strong> Increased by 42% through personalised email marketing and automation.</li>
+            <li><strong>Cart Recovery:</strong> Reduced abandoned carts by 35%, recovering lost revenue opportunities.</li>
           </ul>
         </div>
       </section>
@@ -154,9 +159,10 @@ export default function SwissScentCaseStudy() {
         </div>
         <div className="case-clone-row-content">
           <p>
-            Gourmetica&apos;s expertise in advertising, social media management, website design, email marketing,
-            and Google advertising played a crucial role in Swiss Scent&apos;s marketing success. Our comprehensive
-            approach ensured sustainable growth and long-term success for Swiss Scent.
+            Gourmetica delivered a complete e-commerce growth strategy combining paid advertising, website
+            optimisation, social media marketing, SEO, email automation, and conversion rate optimisation. This
+            integrated approach enabled Swiss Scent to scale online sales, strengthen customer loyalty, and achieve
+            sustainable long-term growth.
           </p>
         </div>
       </section>

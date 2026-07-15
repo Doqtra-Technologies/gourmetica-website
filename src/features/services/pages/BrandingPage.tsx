@@ -1,6 +1,6 @@
 import { PageContainer } from '@/core/primitives';
 import { ServiceLayout } from '../layouts/ServiceLayout';
-import { ServiceTextHero } from '../components/ServiceTextHero';
+import { ServiceImageHero } from '../components/ServiceImageHero';
 import { SplitBackgroundBlock } from '@/blocks';
 import { ServiceBodyImage } from '../components/ServiceBodyImage';
 import { ServiceBodyText } from '../components/ServiceBodyText';
@@ -33,10 +33,11 @@ const FEATURES = [
 export function BrandingPage() {
   return (
     <ServiceLayout>
-      <ServiceTextHero
+      <ServiceImageHero
+        src="/SERVICES BANNER/Branding.png"
+        alt="Brand identity moodboard being designed on a laptop"
         title="Restaurant Branding"
         subtitle="Be the best choice for your customers - every time. A memorable logo and consistent branding are keys to getting inside customers' minds and staying there."
-        size="xl"
       />
       <SplitBackgroundBlock>
         <PageContainer size="standard" className="pb-[60px] md:pb-[80px]">
